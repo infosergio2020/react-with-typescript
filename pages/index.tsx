@@ -1,10 +1,24 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+import { RandomFox } from "../components/RandomFox";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
+//generate random function between 1 and 123
+const getRandomNumber = (): number => Math.floor(Math.random() * 123) + 1;
+
 export default function Home() {
+  // definimos el tipado de el state con <> sea string[] o Array<string>
+  const [images, setImages] = useState<Array<string>>([
+    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+  ]);
+
   return (
     <div>
       <Head>
@@ -14,13 +28,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1 className="text-3xl font-bold underline">
-          Hello Platzi!
-        </h1>
+        <h1 className="text-3xl font-bold underline">Hello Platzi!</h1>
+        {images.map((image,index) => (
+          <div className="p-4">
+            <RandomFox key={index}
+              alt={`zorros aleatorios`}
+              image={image}
+            />
+          </div>
+        ))}
       </main>
 
-      <footer>
-      </footer>
+      <footer></footer>
     </div>
   );
 }
