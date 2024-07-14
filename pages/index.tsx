@@ -3,20 +3,25 @@ import { Inter } from "next/font/google";
 import { RandomFox } from "../components/RandomFox";
 import { useState } from "react";
 
+// defino tipo para simplificar el tipado
+type ImageItem = {id:string,url:string};
+
 const inter = Inter({ subsets: ["latin"] });
 
 //generate random function between 1 and 123
 const getRandomNumber = (): number => Math.floor(Math.random() * 123) + 1;
+// genero una funcion para id random
+const generateId = ():string => Math.random().toString(36).substring(2,9);
 
 export default function Home() {
   // definimos el tipado de el state con <> sea string[] o Array<string>
-  const [images, setImages] = useState<Array<string>>([
-    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
-    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
-    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
-    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
-    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
-    `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+  const [images, setImages] = useState<Array<ImageItem>>([
+    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
   ]);
 
   return (
@@ -29,11 +34,11 @@ export default function Home() {
       </Head>
       <main>
         <h1 className="text-3xl font-bold underline">Hello Platzi!</h1>
-        {images.map((image,index) => (
+        {images.map(({id,url}) => (
           <div className="p-4">
-            <RandomFox key={index}
+            <RandomFox key={id}
               alt={`zorros aleatorios`}
-              image={image}
+              image={url}
             />
           </div>
         ))}
