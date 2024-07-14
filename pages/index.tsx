@@ -1,28 +1,39 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import { RandomFox } from "../components/RandomFox";
-import { useState } from "react";
+import { useState, MouseEventHandler } from "react";
 
 // defino tipo para simplificar el tipado
-type ImageItem = {id:string,url:string};
+type ImageItem = { id: string; url: string };
 
 const inter = Inter({ subsets: ["latin"] });
 
 //generate random function between 1 and 123
 const getRandomNumber = (): number => Math.floor(Math.random() * 123) + 1;
 // genero una funcion para id random
-const generateId = ():string => Math.random().toString(36).substring(2,9);
+const generateId = (): string => Math.random().toString(36).substring(2, 9);
 
 export default function Home() {
   // definimos el tipado de el state con <> sea string[] o Array<string>
   const [images, setImages] = useState<Array<ImageItem>>([
-    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
-    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
-    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
-    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
-    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
-    { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    // { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    // { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    // { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    // { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    // { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
+    // { id:generateId() ,url:`https://randomfox.ca/images/${getRandomNumber()}.jpg`,},
   ]);
+
+  //verificamos la definicion de onclick vemos que retornan funciones que reciben funciones del siguiente tipo MouseEventHandler<HTMLButtonElement> establecemos el tipo en la funcion a enviar como argumento de onclick
+  const addNewFox: MouseEventHandler<HTMLButtonElement>  = (event) => {
+    // definimos el tipado
+    const newImageItem:ImageItem = {
+      id: generateId(),
+      url: `https://randomfox.ca/images/${getRandomNumber()}.jpg`,
+    };
+
+    setImages([...images, newImageItem]);
+  };
 
   return (
     <div>
@@ -34,12 +45,15 @@ export default function Home() {
       </Head>
       <main>
         <h1 className="text-3xl font-bold underline">Hello Platzi!</h1>
-        {images.map(({id,url}) => (
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={addNewFox}
+        >
+          AddFox
+        </button>
+        {images.map(({ id, url }) => (
           <div className="p-4">
-            <RandomFox key={id}
-              alt={`zorros aleatorios`}
-              image={url}
-            />
+            <RandomFox key={id} alt={`zorros aleatorios`} image={url} />
           </div>
         ))}
       </main>
